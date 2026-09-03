@@ -237,6 +237,12 @@
     border-top: 1px solid #1e1e1e; padding-top: 2rem; margin-top: 4rem;
   }
 
+  .email-short { display: none; }
+  @media (max-width: 768px) {
+    .email-full { display: none; }
+    .email-short { display: inline; }
+  }
+
   /* RESPONSIVE */
   @media (max-width: 768px) {
     nav { padding: 1.2rem 1.5rem; }
@@ -354,7 +360,8 @@
       <div class="connect-links">
         <a class="connect-link" href="mailto:Jasper.croonenberghs8@gmail.com">
           <span class="cl-label">Email</span>
-          Jasper.croonenberghs8@gmail.com
+          <span class="email-full">Jasper.croonenberghs8@gmail.com</span>
+          <span class="email-short">jasper.croo@gmail.com</span>
         </a>
         <a class="connect-link" href="https://instagram.com/jasper.croo" target="_blank">
           <span class="cl-label">Instagram</span>
@@ -390,9 +397,22 @@
     }, 1500);
   }
 
-  document.addEventListener('mousemove', openCurtain, { once: true });
+  // desktop: click only
   curtain.addEventListener('click', openCurtain);
   curtainName.addEventListener('click', openCurtain);
+
+  // Swipe in any direction on touch devices
+  let touchStartX = null, touchStartY = null;
+  document.addEventListener('touchstart', function(e) {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchmove', function(e) {
+    if (touchStartX === null || opened) return;
+    const dx = Math.abs(e.touches[0].clientX - touchStartX);
+    const dy = Math.abs(e.touches[0].clientY - touchStartY);
+    if (dx > 10 || dy > 10) openCurtain();
+  }, { passive: true });
 </script>
 </body>
 </html>
